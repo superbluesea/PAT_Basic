@@ -910,11 +910,11 @@ void Pat1026()
 	printf("%02d:%02d:%02d", hh, mm, ss);
 }
 
+//后面的空格不能输出
 void Pat1027()
 {
-	int N;
 	char c;
-	int sum = 1, count = 1, i = 1, remain = 0;
+	int N, sum = 1, count = 1, i = 1, remain = 0;
 	scanf("%d %c", &N, &c);
 	for (i = 1;; ++i)
 	{
@@ -926,6 +926,7 @@ void Pat1027()
 	sum = sum - ((i * 2) + 1) * 2;
 	count -= 2;
 	remain = N - sum;
+
 	for (i = 0; i < count; ++i)
 	{
 		for (int j = 0; j < count; ++j)
@@ -934,10 +935,12 @@ void Pat1027()
 			{
 				printf("%c", c);
 			}
-			else
+			else if (i>j && j<count-1-i )
 			{
 				printf(" ");
 			}
+			else
+				break;
 		}
 		printf("\n");
 	}
@@ -1418,9 +1421,21 @@ void Pat1039()
 	}
 }
 
+//取模运算
+//(a+b)%c = (a%c+b%c)%c
 void Pat1040()
 {
-
+	const int inf = 1000000007;
+	int p, pa, result;
+	p = pa = result = 0;
+	char c;
+	while ((c = getchar()) != '\n')
+	{
+		if (c == 'P')++p;
+		if (c == 'A')pa = (pa + p) % inf;
+		if (c == 'T')result = (result + pa) % inf;
+	}
+	printf("%d\n", result);
 }
 
 void Pat1041()
@@ -1785,9 +1800,53 @@ void Pat1054()
 	
 }
 
+typedef struct peo{
+	char name[10];
+	int height;
+}peo;
+
+int cmpHeight(const void *a, const void *b)
+{
+	if ((*(peo*)b).height == (*(peo*)a).height)
+		return strcmp((*(peo*)a).name, (*(peo*)b).name);
+	else
+		return (*(peo*)b).height - (*(peo*)a).height;
+}
+
 void Pat1055()
 {
+	int N, K, i = 0;
+	scanf("%d %d", &N, &K);
+	peo *p = (peo*)malloc(sizeof(peo)*N);
+	for (i = 0; i<N; ++i)
+	{
+		scanf("%s %d", (*(p + i)).name, &(*(p + i)).height);
+	}
+	int perRow = N / K, lastRow = N % K + perRow, pos = 0;
+	qsort(p, N, sizeof(peo), cmpHeight);
+	int x = 0;
+	for (x = lastRow / 2 * 2 - 1; x > 0; x -= 2)
+	{
+		printf("%s ", (*(p + x)).name);
+	}
+	for (x = 0; x < lastRow; x += 2)
+	{
+		if (x == lastRow - 1 || x == lastRow - 2)printf("%s\n", (*(p + x)).name);
+		else printf("%s ", (*(p + x)).name);
+	}
 
+	for (int j = lastRow; j < N; j += perRow)
+	{
+		for (x = perRow / 2 * 2 - 1; x + j > j; x -= 2)
+		{
+			printf("%s ", (*(p + j + x)).name);
+		}
+		for (x = 0; x < perRow; x += 2)
+		{
+			if (x == perRow - 1 || x == perRow - 2)printf("%s\n", (*(p + j + x)).name);
+			else printf("%s ", (*(p + j + x)).name);
+		}
+	}
 }
 
 void Pat1056()
@@ -2121,55 +2180,17 @@ void Pat1070()
 	qsort(r, N, sizeof(int), cmpRope);
 	double d = (double)r[0] / 2;
 	for (int i = 1; i<N; ++i)
-		d = (d + (double)r[i] / 2) / 2;
-	printf("%d\n", (int)d * 2);
-}
-
-typedef struct peo{
-	char name[10];
-	int height;
-}peo;
-
-int cmpHeight(const void *a, const void *b)
-{
-	return (*(peo*)b).height - (*(peo*)a).height;
-}
-
-int cmpHeight2(const void *a, const void *b)
-{
-	return (*(peo*)a).height - (*(peo*)b).height;
+	{
+		if (i == N - 1)
+			d = d + (double)r[i] / 2;
+		else
+			d = (d + (double)r[i] / 2) / 2; 
+	}
+	printf("%d\n", (int)d);
 }
 
 int main()
 {	
-	int N, K, i = 0;
-	scanf("%d %d", &N, &K);
-	peo *p = (peo*)malloc(sizeof(peo)*N);
-	for (i = 0; i<N; ++i)
-	{
-		scanf("%s %d", (*(p + i)).name, &(*(p + i)).height);
-	}
-	int perRow = N / K, lastRow = N % K + perRow;
-	qsort(p, N, sizeof(peo), cmpHeight);
-	qsort(p, lastRow, sizeof(peo), cmpHeight2);
-	for (i = 0; i < lastRow; i+=2)
-		printf("%s ", (*(p + i)).name);
-	for (i = lastRow - 1; i > 0; i -= 2)
-	{
-		if (i == 1)printf("%s\n", (*(p + i)).name);
-		else printf("%s ", (*(p + i)).name);
-	}
-	for (i = lastRow; i < N - 1 - lastRow; i+=perRow)
-	{
-		qsort(p + i, perRow, sizeof(peo), cmpHeight2);
-		int j = i;
-		for (j; j < i+perRow; j += 2)
-			printf("%s ", (*(p + j)).name);
-		for (j = i+perRow - 1; j > i; j -= 2)
-		{
-			if (j == i+1)printf("%s\n", (*(p + j)).name);
-			else printf("%s ", (*(p + j)).name);
-		}
-	}
+
 	return 0;
 }
