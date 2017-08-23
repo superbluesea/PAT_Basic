@@ -814,24 +814,25 @@ void Pat1023()
 	printf("%s", str);
 }
 
-//有三个测试点超时
+//有三个测试点超时（已通过)
 void Pat1024()
 {
 	char sym, A[10000];
-	int i = 0;
+	int i = 0;//小数位数
 	sym = getchar();
 	while ((A[i++] = getchar()) != 'E');
 	int e;
 	scanf("%d", &e);
-	i -= 3;
+	i -= 3;//减去整数、小数点和E
 	if (sym == '-')putchar('-');
 	if (e >= 0)
 	{
 		if (e <= i)
 		{
 			putchar(A[0]);
-			int j = 1;
-			while (e){ if (A[j] != '.'){ putchar(A[j++]); --e; } }
+			int j = 2,k = e;
+			while (k){ putchar(A[j++]); --k; }
+			if (e != i)putchar('.');
 			while (A[j] != 'E')putchar(A[j++]);
 		}
 		else
@@ -1879,40 +1880,72 @@ void Pat1057()
 	printf("%d %d\n", zeroCount, oneCount);
 }
 
+//
+typedef struct option{
+	int score;
+	int optionNum;
+	int rightNum;
+	char rightChoose[6];
+}option;
+
 void Pat1058()
 {
-	typedef struct studentOption{
-		int num;
-		char stuChoose[5];
-	}studentOption;
-	typedef struct option{
-		int score;
-		int optionNum;
-		int rightNum;
-		char rightChoose[5];
-	};
-	studentOption stuOpt[1001];
-	option opt[101];
-	for (int i = 1; i < 101; ++i)
-		for (int j = 0; j < 5; ++j)
-			opt[i].rightChoose[j] = '\0';
-	int N, M;
-	scanf("%d %d", &N, &M);
-	for (int i = 1; i <= M; ++i)
+	option opt[100];
+	int N, M, wrongCnt[100];
+	memset(wrongCnt, 0, sizeof(int) * 100);
+	scanf("%d%d", &N, &M);
+	for (int i = 0; i < M; ++i)
 	{
-		scanf("%d %d %d", &opt[i].score, &opt[i].optionNum, &opt[i].rightNum);
+		scanf("%d%d%d", &opt[i].score, &opt[i].optionNum, &opt[i].rightNum);
 		for (int j = 0; j < opt[i].rightNum; ++j)
-			opt[i].rightChoose[j] = getchar();
+			scanf(" %c", &opt[i].rightChoose[j]);
+		opt[i].rightChoose[opt[i].rightNum] = '\0';
 	}
-	for (int i = 1; i <= N; ++i)
-		for (int j = 1; j <= M; ++j)
+	for (int i = 0; i < N; ++i)
+	{ 
+		int score = 0;
+		scanf("\n");
+		for (int j = 0; j < M; ++j)
 		{
-			getchar();
-			scanf("%d", &stuOpt[i].num);
-			for (int k = 0; k < stuOpt[i].num; ++k)
-				stuOpt[i].stuChoose[k] = getchar();
-			getchar();
+			if (j != 0)scanf(" ");
+			int num;
+			char ans[6];
+			scanf("(%d", &num);
+			for (int k = 0; k < num; ++k)
+				scanf(" %c", &ans[k]);
+			ans[num] = '\0';
+			scanf(")");
+			if (num != opt[j].rightNum)
+			{
+				++wrongCnt[j];
+				continue;
+			}
+			else
+			{
+				if (!strcmp(ans, opt[j].rightChoose))
+					score += opt[j].score;
+				else
+					++wrongCnt[j];
+			}
 		}
+		printf("%d\n", score);
+	}
+	int maxWrongTimes = 0;
+	for (int i = 0; i < M; ++i)
+	{
+		if (wrongCnt[i]>maxWrongTimes)
+			maxWrongTimes = wrongCnt[i];
+	}
+	if (!maxWrongTimes)
+		printf("Too simple\n");
+	else
+	{
+		printf("%d", maxWrongTimes);
+		for (int i = 0; i < M; ++i)
+		{
+			if (wrongCnt[i] == maxWrongTimes)printf(" %d", i + 1);
+		}
+	}
 }
 
 void Pat1059()
