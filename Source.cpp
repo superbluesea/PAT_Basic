@@ -7,6 +7,11 @@
 #include <time.h>
 using namespace std;
 
+int gcd(int a, int b)
+{
+	return b == 0 ? a : gcd(b, a%b);
+}
+
 int max(int a, int b)
 {
 	return (a > b ? a : b);
@@ -1220,9 +1225,122 @@ void Pat1033()
 
 //考察最大公约数和输出表示
 //分子、分母是整型范围内整数，但是相乘后可能会超出整形范围
+//
+void print(long a, long b, long c, long d, int flag)
+{
+	long g = 1;
+	if (a < 0)g = gcd(-a, b); else g = gcd(a, b);
+	a /= g; b /= g;
+	if (c < 0)g = gcd(-c, d); else g = gcd(c, d);
+	c /= g; d /= g;
+	if (a<0)printf("(");
+	if (b != 1)
+		if (a / b)printf("%d %d/%d", a / b, a%b < 0 ? -a%b : a%b, b); else if (a)printf("%d/%d", a, b); else printf("0");
+	else
+		printf("%d", a);
+	if (a<0)printf(")");
+	switch (flag)
+	{
+	case 1:printf(" + "); break;
+	case 2:printf(" - "); break;
+	case 3:printf(" * "); break;
+	case 4:printf(" / "); break;
+	deafult:break;
+	}
+	if (c<0)printf("(");
+	if (d != 1)
+		if (c / d)printf("%d %d/%d", c / d, c%d < 0 ? -c%d : c%d, d); else if (c)printf("%d/%d", c, d); else printf("0");
+	else
+		printf("%d", c);
+	if (c<0)printf(")");
+	printf(" = ");
+}
+
+void printAdd(long a, long b, long c, long d)
+{
+	long den = b*d;
+	long num = a*d + b*c;
+	long g = 1;
+	if (num < 0)g = gcd(den, -num); else g = gcd(den, num);
+	den /= g;
+	num /= g;
+	print(a, b, c, d, 1);
+	if (num<0)printf("(");
+	if (den != 1)
+		if (num / den)printf("%d %d/%d", num / den, num%den<0 ? -num%den : num%den, den); else
+			if (num)printf("%d/%d", num, den); else printf("0");
+	else
+		printf("%d", num);
+	if (num<0)printf(")");
+}
+
+void printSub(long a, long b, long c, long d)
+{
+	long den = b*d;
+	long num = a*d - b*c;
+	long g = 1;
+	if (num < 0)g = gcd(den, -num); else g = gcd(den, num);
+	den /= g;
+	num /= g;
+	print(a, b, c, d, 2);
+	if (num<0)printf("(");
+	if (den != 1)
+		if (num / den)printf("%d %d/%d", num / den, num%den<0 ? -num%den : num%den, den); else
+			if (num)printf("%d/%d", num, den); else printf("0");
+	else
+		printf("%d", num);
+	if (num<0)printf(")");
+}
+
+void printMulti(long a, long b, long c, long d)
+{
+	long den = b*d;
+	long num = a*c;
+	long g = 1;
+	if (num < 0)g = gcd(den, -num); else g = gcd(den, num);
+	den /= g;
+	num /= g;
+	print(a, b, c, d, 3);
+	if (num<0)printf("(");
+	if (den != 1)
+		if (num / den)printf("%d %d/%d", num / den, num%den<0 ? -num%den : num%den, den); else
+			if (num)printf("%d/%d", num, den); else printf("0");
+	else
+		printf("%d", num);
+	if (num<0)printf(")");
+}
+
+void printDiv(long a, long b, long c, long d)
+{
+	long den = b*c;
+	long num = a*d;
+	long g = 1;//
+	if (den < 0 && num > 0)g = gcd(-den, num);
+	if (den > 0 && num < 0)g = gcd(den, -num);
+	if (den < 0 && num < 0)g = gcd(-den, -num);
+	if (den > 0 && num > 0)g = gcd(den, num);
+	den /= g;
+	num /= g;
+	if (den < 0){ den = -den; num = -num; }
+	print(a, b, c, d, 4);
+	if (!c){ printf("Inf"); return; }
+	if (num<0)printf("(");
+	if (den != 1)
+		if (num / den)printf("%d %d/%d", num / den, num%den<0 ? -num%den : num%den, den); else
+			if (num)printf("%d/%d", num, den); else printf("0");
+	else
+		printf("%d", num);
+	if (num<0)printf(")");
+}
+
 void Pat1034()
 {
-
+	long a1, b1, a2, b2;
+	scanf("%ld/%ld%ld/%ld", &a1, &b1, &a2, &b2);
+	printAdd(a1, b1, a2, b2); printf("\n");
+	printSub(a1, b1, a2, b2); printf("\n");
+	printMulti(a1, b1, a2, b2); printf("\n");
+	printDiv(a1, b1, a2, b2); printf("\n");
 }
 //未完成
 void Pat1035()
@@ -1689,16 +1807,71 @@ void Pat1051()
 	else
 		if (a1*a2 - b1*b2 != 0)printf("%.2lf\n", a1*a2 - b1*b2); else printf("0");
 }
-//
+//第2、第3个测试点注意用户可能输入小于1的数字（下越界）
 void Pat1052()
 {
-	int N, D;
-	double e;
-	scanf("%d %lf %d", &N, &e, &D);
-	int maybeNullNum = 0, nullNum = 0;
-	for (int i = 0; i < N; ++i)
+	char handEmoji[10][5], eyeEmoji[10][5], mouthEmoji[10][5], ch[100];
+	int flag = 0, i = 0, k = 0, hNum, eNum, mNum;
+	gets(ch);
+	while (ch[k] != '\0')
 	{
-		
+		if (ch[k] == '[')flag = 1;
+		if (flag)
+		{
+			int j = 0;
+			++k;
+			while (ch[k] != ']'){ handEmoji[i][j] = ch[k]; ++k; ++j; }
+			handEmoji[i][j--] = '\0';
+			flag = 0;
+			++i;
+		}
+		++k;
+	}
+	hNum = i;
+	k = i = 0;
+	gets(ch);
+	while (ch[k] != '\0')
+	{
+		if (ch[k] == '[')flag = 1;
+		if (flag)
+		{
+			int j = 0;
+			++k;
+			while (ch[k] != ']'){ eyeEmoji[i][j] = ch[k]; ++k; ++j; }
+			eyeEmoji[i][j--] = '\0';
+			flag = 0;
+			++i;
+		}
+		++k;
+	}
+	eNum = i;
+	k = i = 0;
+	gets(ch);
+	while (ch[k] != '\0')
+	{
+		if (ch[k] == '[')flag = 1;
+		if (flag)
+		{
+			int j = 0;
+			++k;
+			while (ch[k] != ']'){ mouthEmoji[i][j] = ch[k]; ++k; ++j; }
+			mouthEmoji[i][j--] = '\0';
+			flag = 0;
+			++i;
+		}
+		++k;
+	}
+	mNum = i;
+	int K, a, b, c, d, e;
+	scanf("%d", &K);
+	for (i = 0; i<K; ++i)
+	{
+		scanf("%d%d%d%d%d", &a, &b, &c, &d, &e);
+		if (a<1 || b<1 || c<1 || d<1 || e<1){ printf("Are you kidding me? @\\/@\n"); continue; }
+		if (a>hNum || e > hNum){ printf("Are you kidding me? @\\/@\n"); continue; }
+		if (b > eNum || d > eNum){ printf("Are you kidding me? @\\/@\n"); continue; }
+		if (c > mNum){ printf("Are you kidding me? @\\/@\n"); continue; }
+		printf("%s(%s%s%s)%s\n", handEmoji[a - 1], eyeEmoji[b - 1], mouthEmoji[c - 1], eyeEmoji[d - 1], handEmoji[e - 1]);
 	}
 }
 
@@ -1719,7 +1892,7 @@ void Pat1053()
 			if (tmp<e)++count;
 		}
 		if (count >= K / 2 + 1)
-			if (K > D)++nullRoom; else++mayNullRoom;
+			if (K > D)++nullRoom; else ++mayNullRoom;
 	}
 	printf("%.1lf%% %.1lf%%\n", (double)mayNullRoom / N * 100, (double)nullRoom / N * 100);
 }
@@ -2015,11 +2188,6 @@ void Pat1061()
 		}
 		printf("%d\n", sum);
 	}	
-}
-
-int gcd(int a,int b)
-{
-	return b == 0 ? a : gcd(b, a%b);
 }
 
 //不要用浮点型，会有精度损失
