@@ -2280,6 +2280,8 @@ void Pat1064()
 		if (num[i]){ --count; if (count)printf("%d ", i); else printf("%d", i); }
 }
 
+//注意输出补0
+//有个测试点最后一行不能换行
 void Pat1065()
 {
 	int N, M, singleDog[10000], count;
