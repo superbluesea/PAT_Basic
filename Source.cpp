@@ -1040,49 +1040,82 @@ void Pat1029()
 	printf("\n");
 }
 
+//有一个测试用例是输入1 1 x
+//两个数相乘可能超过int能存储的范围
+
+int cmpSeries(const void *a, const void *b)
+{
+	return *(int*)a - *(int*)b;
+}
+
 void Pat1030()
 {
 	int N, p;
-	scanf("%d %d", &N, &p);
-	int v[100004];
-	for (int i = 0; i < N; ++i)
+	scanf("%d%d", &N, &p);
+	long *ptr = (long*)malloc(sizeof(long*)*N);
+	for (int i = 0; i < N; ++i)scanf("%ld", ptr + i);
+	qsort(ptr, N, sizeof(long), cmpSeries);
+	long count = 0;
+
+	int index = N - 1;
+	for (int i = N - 1; i >= 0; --i)
 	{
-		scanf("%d", &v[i]);
-	}
-	sort(v, v + N);
-	int min = v[0], mCount = 0, mPos = 0;
-	int mp = min * p;
-	int count = 0;
-	bool flag = true;
-	for (int i = 0; i < N; ++i)
-	{
-		min = v[i];
-		mp = min * p;
-		count = 0;
-		for (int j = i; j < N; ++j)
+		for (index; index >= 0; --index)
 		{
-			if (mp>v[N - 1] && N - 1 - i < mCount)
+			if (*(ptr + index)*p >= *(ptr + i))
 			{
-				flag = false;
-				break;
-			}
-			if (mp >= v[j])
-			{
-				count += 1;
-				if (count > mCount)
-				{
-					mCount = count;
-				}
+				if (i - index + 1>count)
+					count = i - index + 1;
 			}
 			else
-			{
 				break;
-			}
 		}
-		if (!flag)
-			break;
 	}
-	printf("%d\n", mCount);
+
+	//for (int i = N - 1; i >= 0; --i)
+	//{
+	//	while (*(ptr + index)*p >= *(ptr + i) && index >= 0)
+	//		--index;
+	//	if (count<i-index)
+	//		count = i - index;
+	//}
+
+	//超时
+	//int posMax = N-1, posMin = 0;
+	//for (int i = N-1; i >= 0; --i)
+	//{
+	//	int tmpMax = *(ptr + i);
+	//	for (int j = 0; j < N; ++j)
+	//	{
+	//		if (*(ptr + j)*p * 1L >= tmpMax&&i - j + 1 > count)
+	//		{
+	//			if (i - j + 1 > count)
+	//			{
+	//				count = i - j + 1; break;
+	//			}
+	//			else
+	//				break;
+	//		}
+	//	}
+	//}
+
+
+	//超时	
+	//int posMax = N-1,posMin = 0;
+	//while (posMax >= posMin)
+	//{
+	//	int tmpMax = *(ptr + posMax);
+	//	if (*(ptr + posMin)*p*1L >= tmpMax)
+	//	{
+	//		if (posMax - posMin + 1 > count)
+	//			count = posMax - posMin + 1;
+	//		--posMax;
+	//		posMin = 0;			
+	//	}
+	//	else
+	//		++posMin;
+	//}
+	printf("%d", count);
 }
 
 void Pat1031()
@@ -1770,28 +1803,43 @@ void Pat1049()
 //
 //
 //
+int cmpMatrix(const void *a, const void *b)
+{
+	return *(int*)b - *(int*)a;
+}
 void Pat1050()
 {
 	int N;
 	scanf("%d", &N);
-	int m = 1, n = 1, minValue = N;
-	int ary[10000], matrix[100][100];
-	for (int i = 0; i < N; ++i)
+	int *p = (int*)malloc(sizeof(int)*N);
+	int *matrix = (int*)malloc(sizeof(int)*N);
+	for (int i = 0; i<N; ++i)scanf("%d", p + i);
+	qsort(p, N, sizeof(int), cmpMatrix);
+	int m, n;
+	for (m = 0;; ++m)
 	{
-		scanf("%d", &ary[i]);
+		if (m*m >= N&&N%m == 0)break;
 	}
-	for (int i = 1; i < 101; ++i)
+	n = N / m;
+	int horizontal = n, vertical = m, index = 0, y = 0, x = -1;
+	while (horizontal>0 && vertical>0)
 	{
-		for (int j = 1; j < 101; ++j)
-		{
-			if (i*j == N && i >= j&&i - j < minValue)
-			{
-				m = i;
-				n = j;
-				minValue = m - n;
-			}
-		}
+		for (int i = 0; i<horizontal&&vertical>0; ++i)
+			matrix[y*n + ++x] = p[index++];
+		--vertical;
+		for (int i = 0; i<vertical&&horizontal>0; ++i)
+			matrix[++y*n + x] = p[index++];
+		--horizontal;
+		for (int i = 0; i<horizontal&&vertical>0; ++i)
+			matrix[y*n + --x] = p[index++];
+		--vertical;
+		for (int i = 0; i<vertical&&horizontal>0; ++i)
+			matrix[--y*n + x] = p[index++];
+		--horizontal;
 	}
+	for (int i = 0; i<m; ++i)
+		for (int j = 0; j<n; ++j)
+			printf("%d%c", matrix[i*n + j], (j + 1) % n ? ' ' : '\n');
 }
 
 void Pat1051()
@@ -2282,6 +2330,17 @@ void Pat1064()
 
 //注意输出补0
 //有个测试点最后一行不能换行
+
+typedef struct guest{
+	int isJoinParty;
+	int partner;
+}guest;
+
+int cmpSingleDog(const void *a, const void *b)
+{
+	return *(int*)a - *(int*)b;
+}
+
 void Pat1065()
 {
 	int N, M, singleDog[10000], count;
@@ -2480,18 +2539,27 @@ void Pat1070()
 	printf("%d\n", (int)d);
 }
 
-typedef struct guest{
-	int isJoinParty;
-	int partner;
-}guest;
-
-int cmpSingleDog(const void *a, const void *b)
+int cmpSort(const void *a,const void *b)
 {
 	return *(int*)a - *(int*)b;
 }
-
 int main()
 {	
+	int N, srcAry[100], destAry[100], i;
+	scanf("%d", &N);
+	for (i = 0; i < N; ++i)scanf("%d", &srcAry[i]);
+	for (i = 0; i < N; ++i)scanf("%d", &destAry[i]);
+	for (i = 0; i < N - 1 && destAry[i] < destAry[i + 1]; ++i);
+	for (i += 1; i < N&&srcAry[i] == destAry[i]; ++i);
+	if (i == N)
+	{
+		printf("Insertion Sort\n");
+		qsort(srcAry, i + 1, sizeof(int), cmpSort);
 
+	}
+	else
+	{
+
+	}
 	return 0;
 }
