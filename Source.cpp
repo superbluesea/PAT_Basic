@@ -1375,43 +1375,43 @@ void Pat1034()
 	printMulti(a1, b1, a2, b2); printf("\n");
 	printDiv(a1, b1, a2, b2); printf("\n");
 }
-//未完成
+//
+//
+int cmpSort(const void *a, const void *b)
+{
+	return *(int*)a - *(int*)b;
+}
 void Pat1035()
 {
-	int N;
+	int N, srcAry[100], destAry[100], i, j;
 	scanf("%d", &N);
-	int a[100], b[100];
-	bool isInsertSort = false;
-	for (int i = 0; i < N; ++i)
+	for (i = 0; i < N; ++i)scanf("%d", &srcAry[i]);
+	for (i = 0; i < N; ++i)scanf("%d", &destAry[i]);
+	//相等的情况
+	for (i = 0; i < N - 1 && destAry[i] <= destAry[i + 1]; ++i);
+	for (j = i + 1; j < N&&srcAry[j] == destAry[j]; ++j);
+	if (j == N)
 	{
-		scanf("%d", &a[i]);
+		if (i == N - 1)i += 1; else i += 2;
+		printf("Insertion Sort\n");
+		qsort(srcAry, i, sizeof(int), cmpSort);
 	}
-	for (int i = 0; i < N; ++i)
+	else
 	{
-		scanf("%d", &b[i]);
-	}
-	for (int i = 0; i < N - 1; ++i)
-	{
-		if (a[i + 1] < a[i])
+		printf("Merge Sort\n");
+		int flag = 1;
+		for (int k = 1; k <= N&&flag; k *= 2)
 		{
-			int j = i;
-			int tmp = a[i + 1];
-			while (j >= 0 && a[j] > tmp)
-			{
-				a[j + 1] = a[j];
-				--j;
-			}
-			a[j + 1] = tmp;
-			int k;
-			for (k = 0; k < N; ++k)
-			{
-				if (a[k] != b[k])
-					break;
-			}
-			if (k == N - 1)
-				isInsertSort = true;
+			int index;
+			for (index = 0; index < N&&srcAry[index] == destAry[index]; ++index);
+			if (index == N)
+				flag = 0;
+			for (j = 0; j < N / k; ++j)
+				qsort(srcAry + j*k, k, sizeof(int), cmpSort);
+			qsort(srcAry + j*k, N%k, sizeof(int), cmpSort);
 		}
 	}
+	for (i = 0; i < N; ++i){ if (i == 0)printf("%d", srcAry[i]); else printf(" %d", srcAry[i]); }
 }
 
 void Pat1036()
@@ -2208,10 +2208,36 @@ void Pat1059()
 		else printf("%04d: Checked\n", tmp);
 	}
 }
-
+//理解题目意思
+//自己的方法待改进
 void Pat1060()
 {
-	
+	int N, ary[100000], max = 0;
+	scanf("%d", &N);
+	for (int i = 0; i < N; ++i)scanf("%d", ary + i);
+	qsort(ary, N, sizeof(int), cmpEddington);
+	for (int i = 0; i < N; ++i)
+	{
+		if (i + 1 >= ary[i])
+			break;
+		else
+			++max;
+	}
+	printf("%d", max);
+	//int N, ary[100000], ary2[100000], max = 0;
+	//memset(ary2, 0, sizeof(int) * 100000);
+	//scanf("%d", &N);
+	//for (int i = 0; i < N; ++i)
+	//{
+	//	scanf("%d", ary + i);
+	//	for (int j = ary[i] - 2; j >= 0; --j)
+	//		ary2[j] += 1;
+	//}
+	//for (int i = 0; i < N; ++i)
+	//	if (i + 1 == ary2[i] && i + 1 > max)
+	//		max = i + 1;
+	//printf("%d", max);
+	//return 0;	
 }
 
 void Pat1061()
@@ -2539,27 +2565,13 @@ void Pat1070()
 	printf("%d\n", (int)d);
 }
 
-int cmpSort(const void *a,const void *b)
+int cmpEddington(const void *a,const void *b)
 {
-	return *(int*)a - *(int*)b;
+	return *(int*)b - *(int*)a;
 }
+
 int main()
 {	
-	int N, srcAry[100], destAry[100], i;
-	scanf("%d", &N);
-	for (i = 0; i < N; ++i)scanf("%d", &srcAry[i]);
-	for (i = 0; i < N; ++i)scanf("%d", &destAry[i]);
-	for (i = 0; i < N - 1 && destAry[i] < destAry[i + 1]; ++i);
-	for (i += 1; i < N&&srcAry[i] == destAry[i]; ++i);
-	if (i == N)
-	{
-		printf("Insertion Sort\n");
-		qsort(srcAry, i + 1, sizeof(int), cmpSort);
 
-	}
-	else
-	{
-
-	}
 	return 0;
 }
