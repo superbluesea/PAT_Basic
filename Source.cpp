@@ -860,49 +860,7 @@ void Pat1024()
 
 void Pat1025()
 {
-	typedef struct listnode{
-		int address;
-		int data;
-		int next;
-	} listnode;
-	vector<listnode> vin(100000);
-	vector<listnode> vsort;
-	vector<listnode> vout;
-	int firstAddress, N, K;
-	listnode tmp;
-	scanf("%d %d %d", &firstAddress, &N, &K);
-	for (int i = 0; i < N; ++i)
-	{
-		scanf("%d %d %d", &tmp.address, &tmp.data, &tmp.next);
-		vin[tmp.address] = tmp;
-	}
-	vsort.push_back(vin[firstAddress]);
-	int nextAddress = vin[firstAddress].next;
-	while (nextAddress != -1)
-	{
-		vsort.push_back(vin[nextAddress]);
-		nextAddress = vin[nextAddress].next;
-	}
-	int len = vsort.size();
 
-	for (int i = K; i <= len; i += K)
-	{
-		for (int j = i - 1; j >= i - K; --j)
-		{
-			vout.push_back(vsort[j]);
-		}
-	}
-	for (int i = (len / K)*K; i < len; ++i)
-	{
-		vout.push_back(vsort[i]);
-	}
-
-	for (int i = 0; i < len - 1; ++i)
-	{
-		vout[i].next = vout[i + 1].address;
-		printf("%05d %d %05d\n", vout[i].address, vout[i].data, vout[i].next);
-	}
-	printf("%05d %d -1", vout[len - 1].address, vout[len - 1].data);
 }
 
 void Pat1026()
