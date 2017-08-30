@@ -2210,6 +2210,10 @@ void Pat1059()
 }
 //理解题目意思
 //自己的方法待改进
+int cmpEddington(const void *a, const void *b)
+{
+	return *(int*)b - *(int*)a;
+}
 void Pat1060()
 {
 	int N, ary[100000], max = 0;
@@ -2563,11 +2567,6 @@ void Pat1070()
 			d = (d + (double)r[i] / 2) / 2; 
 	}
 	printf("%d\n", (int)d);
-}
-
-int cmpEddington(const void *a,const void *b)
-{
-	return *(int*)b - *(int*)a;
 }
 
 int main()
