@@ -2573,37 +2573,39 @@ int main()
 		*(p + count++) = &n[first];
 		first = n[first].next;
 	}
-	for (i = 0; i < N / K; i++)
+	for (i = 0; i < count / K; ++i)
 	{
-		pNode tmp = *(p + i * K);
-		for (int j = 0; j < K / 2; j++)
+		int start = i*K, end = (i + 1)*K - 1;
+		while (end > start)
 		{
-
+			pNode tmp = *(p + end);
+			*(p + end) = *(p + start);
+			*(p + start) = tmp;
+			++start; --end;
 		}
 	}
-
-
-
-
-	//for (i = 0; i < count / K; ++i)
-	//{
-	//	int start = i*K, end = (i + 1)*K - 1;
-	//	while (end > start)
-	//	{
-	//		pNode tmp = *(p + end);
-	//		*(p + end) = *(p + start);
-	//		*(p + start) = tmp;
-	//		++start; --end;
-	//	}
-	//}
-	//i = N - N%K - 1;
-	//int nextAddress = (*p[i + 1]).address;
-	//while (i >= 0)
-	//{
-	//	(*p[i]).next = nextAddress;
-	//	nextAddress = (*p[i]).address;
-	//	--i;
-	//}
+	if (count%K)
+	{ 
+		i = count - count%K - 1;
+		int nextAddress = (*p[i + 1]).address;
+		while (i >= 0)
+		{
+			(*p[i]).next = nextAddress;
+			nextAddress = (*p[i]).address;
+			--i;
+		}
+	}
+	else
+	{
+		i = count - 1;
+		int nextAddress = -1;
+		while (i >= 0)
+		{
+			(*p[i]).next = nextAddress;
+			nextAddress = (*p[i]).address;
+			--i;
+		}
+	}
 	for (i = 0; i < count - 1; ++i)
 		printf("%05d %d %05d\n", (*p[i]).address, (*p[i]).data, (*p[i]).next);
 	printf("%05d %d -1\n", (*p[i]).address, (*p[i]).data, (*p[i]).next);
