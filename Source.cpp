@@ -147,7 +147,6 @@ void Pat1005()
 			--count; if (count)printf("%d ", num[i]); else printf("%d", num[i]);
 		};
 	}
-	printf("\n");
 }
 
 void Pat1006()
@@ -159,18 +158,17 @@ void Pat1006()
 	{
 		int i = str[0] - '0'; while (i--)printf("B");
 		i = str[1] - '0'; while (i--)printf("S");
-		i = str[2] - '0'; int j = 0; while (j<i)printf("%d", j + 1);
+		i = str[2] - '0'; int j = 0; while (j<i)printf("%d", j++ + 1);
 	}
 	if (length == 2)
 	{
 		int i = str[0] - '0'; while (i--)printf("S");
-		i = str[1] - '0'; int j = 0; while (j<i)printf("%d", j + 1);
+		i = str[1] - '0'; int j = 0; while (j<i)printf("%d", j++ + 1);
 	}
 	if (length == 1)
 	{
-		int i = str[0] - '0'; int j = 0; while (j<i)printf("%d", j + 1);
+		int i = str[0] - '0'; int j = 0; while (j<i)printf("%d", j++ + 1);
 	}
-	printf("\n");
 }
 
 void Pat1007()
