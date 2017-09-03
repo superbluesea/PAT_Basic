@@ -292,22 +292,14 @@ void Pat1010()
 
 void Pat1011()
 {
-	int T;
+	int T, i = 0;
 	long int a, b, c;
-	int i = 1;
 	scanf("%d", &T);
-	while (i <= T)
+	while (i < T)
 	{
 		scanf("%ld %ld %ld", &a, &b, &c);
-		if (a + b > c)
-		{
-			printf("Case #%d: true\n", i);
-		}
-		else
-		{
-			printf("Case #%d: false\n", i);
-		}
-		++i;
+		if (a + b > c)printf("Case #%d: true\n", i++ + 1);
+		else printf("Case #%d: false\n", i++ + 1);
 	}
 }
 
