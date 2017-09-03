@@ -371,94 +371,32 @@ void Pat1013()
 
 void Pat1014()
 {
-	char str[4][70];
+	const char *week[] = { "MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN" };
+	char s1[61], s2[61], s3[61], s4[61];
+	scanf("%s %s %s %s", s1, s2, s3, s4);
 	int i = 0;
-	int j = 0;
-	char day, hh, ss;
-	bool isFindDay = false;
-	bool isFindHh = false;
-	bool isFindSs = false;
-	for (int i = 0; i < 4; ++i)
+	for (i; s1[i] && s2[i]; ++i)
 	{
-		gets(str[i]);
+		if (s1[i] >= 'A'&&s1[i] <= 'G'&&s1[i] == s2[i]){ printf("%s ", *(week + s1[i] - 'A')); break; }
 	}
-	i = 0;
-	while (str[0][i] != '\0')
+	for (++i; s1[i] && s2[i]; ++i)
 	{
-		if (str[0][i] >= 65 && str[0][i] <= 71)
+		if (s1[i] == s2[i])
 		{
-			day = str[0][i];
-			for (j = 0; str[1][j] != '\0'; ++j)
+			if (isdigit(s1[i]))
 			{
-				if (str[1][j] == day)
-				{
-					isFindDay = true;
-					break;
-				}
+				printf("%02d:", s1[i] - '0'); break;
+			}
+			if (s1[i] >= 'A'&&s1[i] <= 'N')
+			{
+				printf("%02d:", s1[i] - 'A' + 10); break;
 			}
 		}
-		if (isFindDay)
-			break;
-		++i;
 	}
-	++i;
-	++j;
-	while (str[0][i] != '\0')
+	for (i = 0; s3[i] && s4[i]; ++i)
 	{
-		if (str[0][i] >= 65 && str[0][i] <= 78)
-		{
-			hh = str[0][i];
-			for (j; str[1][j] != '\0'; ++j)
-			{
-				if (str[1][j] == hh)
-				{
-					isFindHh = true;
-					break;
-				}
-			}
-		}
-		if (isFindHh)
-			break;
-		++i;
+		if (isalpha(s3[i]) && s3[i] == s4[i]){ printf("%02d\n", i); break; }
 	}
-	i = 0;
-	j = 0;
-	while (str[2][i] != '\0')
-	{
-		if ((str[2][i] >= 65 && str[2][i] <= 90) ||
-			(str[2][i] >= 97 && str[2][i] <= 122))
-		{
-			ss = str[2][i];
-			for (j = 0; str[3][j] != '\0'; ++j)
-			{
-				if (str[3][j] == ss)
-				{
-					isFindSs = true;
-					break;
-				}
-			}
-		}
-		if (isFindSs)
-			break;
-		++i;
-	}
-	switch (day)
-	{
-	case 65:printf("MON "); break;
-	case 66:printf("TUE "); break;
-	case 67:printf("WED "); break;
-	case 68:printf("THU "); break;
-	case 69:printf("FRI "); break;
-	case 70:printf("SAT "); break;
-	case 71:printf("SUN "); break;
-	default:break;
-	}
-	int a[15] = { 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23 };
-	int posHh = hh - 65;
-	if (j > 9)
-		printf("%d:%d\n", a[posHh], j);
-	else
-		printf("%d:0%d\n", a[posHh], j);
 }
 //qsort
 typedef struct stu{
