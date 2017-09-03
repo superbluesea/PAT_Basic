@@ -589,7 +589,7 @@ void Pat1019()
 	int num;
 	int number[4];
 	int a = 0, b = 0, c = 0;
-	scanf("%s", &num);
+	scanf("%d", &num);
 	number[0] = num / 1000;
 	number[1] = num / 100 % 10;
 	number[2] = num / 10 % 10;
