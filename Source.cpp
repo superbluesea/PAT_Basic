@@ -1449,14 +1449,8 @@ void Pat1039()
 			canBuy = false;
 		}
 	}
-	if (canBuy)
-	{
-		printf("Yes %d", destLength - srcLength);
-	}
-	else
-	{
-		printf("No %d", lackSum);
-	}
+	if (canBuy)printf("Yes %d", destLength - srcLength);
+	else printf("No %d", lackSum);
 }
 
 //È¡Ä£ÔËËã
