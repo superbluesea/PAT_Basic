@@ -1941,44 +1941,6 @@ void Pat1054()
 		{
 			printf("ERROR: %s is not a legal number\n", str);
 		}
-
-		//int length = strlen(str);
-		//d = strtod(str, &endPtr);
-		//char *dotPtr = strchr(str, '.');
-		//int dotRight = 0;
-		//if (dotPtr)
-		//{
-		//	int dotLength = strlen(dotPtr);
-		//	if (dotLength == 2 || dotLength == 3)
-		//	{
-		//		int dotNum = 0;
-		//		for (int j = 1; j < dotLength; ++j)
-		//		{
-		//			if (dotPtr[j] == '.')
-		//			{
-		//				dotNum += 1;
-		//			}
-		//		}
-		//		if (dotNum >= 1)
-		//			dotRight = 0;
-		//		else
-		//			dotRight = 1;
-		//	}
-		//}
-		//else
-		//	dotRight = 1;
-		//if (d < -1000 ||
-		//	d>1000 ||
-		//	!dotRight ||
-		//	*endPtr)
-		//{
-		//	printf("ERROR: %s is not a legal number\n", str);
-		//}
-		//else
-		//{
-		//	sum += d;
-		//	count += 1;
-		//}
 	}
 	if (count == 0)
 		printf("The average of 0 numbers is Undefined\n");
@@ -1986,7 +1948,6 @@ void Pat1054()
 		printf("The average of 1 numbers is %.2lf\n", sum);
 	if (count >= 2)
 		printf("The average of %d numbers is %.2lf\n", count, sum / count);
-	
 }
 
 typedef struct peo{
