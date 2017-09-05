@@ -2156,20 +2156,6 @@ void Pat1060()
 			++max;
 	}
 	printf("%d", max);
-	//int N, ary[100000], ary2[100000], max = 0;
-	//memset(ary2, 0, sizeof(int) * 100000);
-	//scanf("%d", &N);
-	//for (int i = 0; i < N; ++i)
-	//{
-	//	scanf("%d", ary + i);
-	//	for (int j = ary[i] - 2; j >= 0; --j)
-	//		ary2[j] += 1;
-	//}
-	//for (int i = 0; i < N; ++i)
-	//	if (i + 1 == ary2[i] && i + 1 > max)
-	//		max = i + 1;
-	//printf("%d", max);
-	//return 0;	
 }
 
 void Pat1061()
