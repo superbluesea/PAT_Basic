@@ -1,6 +1,6 @@
 #include<stdio.h>
 
-int gcd(int a, int b)
+long gcd(long a, long b)
 {
 	return b == 0 ? a : gcd(b, a%b);
 }
@@ -28,7 +28,7 @@ void print(long a, long b, long c, long d, int flag)
 	}
 	if (c<0)printf("(");
 	if (d != 1)
-	if (c / d)printf("%ld %ld/%ld", c / d, c%d < 0 ? -c%d : c%d, d); else if (c)printf("%d/%d", c, d); else printf("0");
+	if (c / d)printf("%ld %ld/%ld", c / d, c%d < 0 ? -c%d : c%d, d); else if (c)printf("%ld/%ld", c, d); else printf("0");
 	else
 		printf("%ld", c);
 	if (c<0)printf(")");
@@ -82,10 +82,9 @@ void printMulti(long a, long b, long c, long d)
 	print(a, b, c, d, 3);
 	if (num<0)printf("(");
 	if (den != 1)
-	if (num / den)printf("%ld %ld/%ld", num / den, num%den<0 ? -num%den : num%den, den); else
-	if (num)printf("%ld/%ld", num, den); else printf("0");
-	else
-		printf("%ld", num);
+	if (num / den)printf("%ld %ld/%ld", num / den, num%den<0 ? -num%den : num%den, den); 
+	else if (num)printf("%ld/%ld", num, den); else printf("0");
+	else printf("%ld", num);
 	if (num<0)printf(")");
 }
 
