@@ -2311,7 +2311,8 @@ void Pat1065()
 		if (g[singleDog[i]].partner == -1)continue;
 		if (g[g[singleDog[i]].partner].isJoinParty)
 		{
-			singleDog[i] = -1; --count;
+			singleDog[i] = -1; 
+			--count;
 		}
 	}
 	qsort(singleDog, M, sizeof(int), cmpSingleDog);
