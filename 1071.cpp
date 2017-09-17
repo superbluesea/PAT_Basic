@@ -13,8 +13,8 @@ int main()
 		{
 			if ((n1 > n2&&b == 0) || (n1 < n2&&b == 1)){ T += t; printf("Win %d!  Total = %d.\n", t, T); }
 			else { T -= t; printf("Lose %d.  Total = %d.\n", t, T); }
+			if (T == 0){ printf("Game Over.\n"); break; }
 		}
-		if (T == 0){ printf("Game Over.\n"); break; }
 	}
 	return 0;
 }
